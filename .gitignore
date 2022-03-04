@@ -1,4 +1,6 @@
 # Directories
 .vs/
+MapAYak/.angular/cache/
+MapAYak/node_modules/
 MapAYakApi/bin/
 MapAYakApi/obj/
