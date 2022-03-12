@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.7-alpha">
-
-	<PropertyGroup>
-		<StartupCommand>npm start</StartupCommand>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<Script Include="**" Exclude="*.esproj;**\node_modules\**;**\.angular\**" />
-	</ItemGroup>
-
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>d55e8fab-6785-43b2-a693-b39e9d324c97</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupCommand>npm start</StartupCommand>
+  </PropertyGroup>
+  <ItemGroup>
+    <Script Include="**" Exclude="*.esproj;**\node_modules\**;**\.angular\**" />
+  </ItemGroup>
 </Project>

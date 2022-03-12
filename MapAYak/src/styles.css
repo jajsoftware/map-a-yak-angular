@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+    margin: 0px;
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.float {
+    position: fixed;
+    top: 2%;
+    right: 2%;
+    z-index: 1000;
+}
+
+/*.background-image {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-image: url('../images/kayak.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: opacity(90%);
+}*/
+
+.leaflet-container.crosshair-cursor {
+    cursor: crosshair;
+}
+
+.text-marker-icon {
+    width: auto;
+    height: 25px;
+}
+
+.layer-details {
+    position: fixed;
+    top: 8%;
+    left: 1%;
+    z-index: 1000;
+    width: 25%;
+    display: none;
+}
+
+.layer-details-marker-icon {
+    width: auto;
+    height: 35px;
+}
+
+.distance {
+    position: fixed;
+    top: 8%;
+    left: 1%;
+    z-index: 1000;
+    display: none;
+}
