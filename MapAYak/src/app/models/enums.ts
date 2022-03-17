@@ -1,10 +1,23 @@
-export enum EditMode {
-    View = 0,
-    CreateRoute = 1,
-    CreatePortage = 2,
-    CreateCampsite = 3
+export enum LayerType {
+    Route = 0,
+    Portage = 1,
+    Campsite = 2
+}
+
+export enum LocationType {
+    Portage = 0,
+    Campsite = 1
 }
 
 export enum ModalType {
-    Discard = 0
+    Save = 0,
+    Discard = 1,
+    UserLayers = 2
 }
+
+
+export const LayerTypeDescription = new Map<number, string>([
+    [LayerType.Route, 'Route'],
+    [LayerType.Portage, 'Portage'],
+    [LayerType.Campsite, 'Campsite']
+]);

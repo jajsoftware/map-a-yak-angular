@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalType } from '../../models/enums';
+import { LayerType, LayerTypeDescription, ModalType } from '../../models/enums';
+import { MapService } from '../../services/map.service';
 import { ModalService } from '../../services/modal.service';
 
 @Component({
@@ -8,20 +9,42 @@ import { ModalService } from '../../services/modal.service';
 })
 export class DiscardModal implements OnInit {
 
-    public layerName: string;
+    //==============================================================================
+    // Properties
+    //==============================================================================
+    public type: string;
 
+    //==============================================================================
+    // Data Members
+    //==============================================================================
+    private mapService: MapService;
     private modalService: ModalService;
 
-    constructor(modalService: ModalService) {
+    //==============================================================================
+    // Constructor
+    //==============================================================================
+    constructor(mapService: MapService, modalService: ModalService) {
+        this.mapService = mapService;
         this.modalService = modalService;
-        this.layerName = "REPLACE";
+
+        this.mapService.layerCreated.subscribe(layerType => this.onLayerCreated(layerType));
     }
 
+    //==============================================================================
+    // Overrides
+    //==============================================================================
     ngOnInit(): void {
         this.modalService.add(ModalType.Discard, document.getElementById('discardModal'));
     }
 
-    discard(): void {
+    //==============================================================================
+    // Event Handlers
+    //==============================================================================
+    onLayerCreated(layerType: LayerType): void {
+        this.type = LayerTypeDescription.get(layerType);
+    }
+
+    onDiscard(): void {
         location.reload();
     }
 }

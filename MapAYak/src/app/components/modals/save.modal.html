@@ -1,0 +1,32 @@
+<div id="saveModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Save {{ type }}</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="error" class="text-danger d-flex">{{ error }}</div>
+                <div class="mb-3">
+                    <label class="col-form-label">Name</label>
+                    <input [formControl]="name" class="form-control" />
+                    <div *ngIf="name.touched" class="text-danger">
+                        <div *ngIf="name.errors?.['required']">Name is required.</div>
+                        <div *ngIf="name.errors?.['maxlength']">Name cannot exceed 100 characters.</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="col-form-label">Description</label>
+                    <input [formControl]="description" class="form-control" />
+                    <div *ngIf="description.touched" class="text-danger">
+                        <div *ngIf="description.errors?.['maxlength']">Description cannot exceed 10,000 characters.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button (click)="onSave()" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

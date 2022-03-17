@@ -1,0 +1,23 @@
+<div *ngIf="selectedLayer" class="layer-details" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <img src="{{ selectedLayer.iconPath }}" class="layer-details-marker-icon" alt="Marker">
+                    <span class="align-middle ms-2">{{ selectedLayer.type }}</span>
+                </h4>
+                <button (click)="onCloseDetails()" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>{{ selectedLayer.name }}</h5>
+                <p>{{ selectedLayer.description }}</p>
+                <br />
+                <h6 *ngIf="selectedLayer.distance">Distance: <span>{{ selectedLayer.distance }}</span> Miles</h6>
+                <h6>Created By: <span>{{ selectedLayer.user }}</span></h6>
+            </div>
+            <div class="modal-footer">
+                <button (click)="onCloseDetails()" class="btn btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
