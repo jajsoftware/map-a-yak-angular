@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MapAYakApi.Models
 {
@@ -11,6 +13,7 @@ namespace MapAYakApi.Models
 
         public int Id { get; set; }
 
+        [JsonIgnore]
         [Required]
         public string UserId { get; set; }
 
@@ -25,9 +28,23 @@ namespace MapAYakApi.Models
 
         #region Relations
 
+        [JsonIgnore]
         public IdentityUser User { get; set; }
 
         public IEnumerable<Coordinate> Coordinates { get; set; }
+
+        #endregion
+
+        #region Non-Database Fields
+
+        [NotMapped]
+        public string UserName
+        {
+            get
+            {
+                return User.UserName;
+            }
+        }
 
         #endregion
     }

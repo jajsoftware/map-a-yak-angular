@@ -1,4 +1,4 @@
 export class Coordinate {
-    public Latitude: number;
-    public Longitude: number;
+    public latitude: number;
+    public longitude: number;
 }

@@ -1,10 +1,11 @@
 import { LocationType } from "./enums";
 
 export class Location {
-    public UserId: string;
-    public LocationType: LocationType;
-    public Name: string;
-    public Description: string;
-    public Latitude: number;
-    public Longitude: number;
+    public userId: string;
+    public userName: string;
+    public type: LocationType;
+    public name: string;
+    public description: string;
+    public latitude: number;
+    public longitude: number;
 }

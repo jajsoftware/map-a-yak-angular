@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { LayerType, LayerTypeDescription, ModalType } from '../../models/enums';
@@ -63,11 +64,25 @@ export class SaveModal implements OnInit {
         if (!this.name.valid || !this.description.valid)
             return;
 
-        this.dataService.save(this.layerType, this.name.value, this.description.value).subscribe(error => {
-            if (error)
-                this.error = error as string;
-            else
-                location.reload();
-        });
+        this.dataService.save(this.layerType, this.name.value, this.description.value).subscribe(
+            success => location.reload(),
+            error => this.handleError(error));
+    }
+
+    //==============================================================================
+    // Private Methods
+    //==============================================================================
+    handleError(response: HttpErrorResponse): void {
+        this.error = '';
+
+        if (typeof response.error === 'string') {
+            this.error = response.error;
+            return
+        }
+
+        for (var field in response.error) {
+            for (var error of response.error[field])
+                this.error += error + '\r\n';
+        }
     }
 }

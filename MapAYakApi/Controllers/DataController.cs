@@ -42,7 +42,7 @@ namespace MapAYakApi.Controllers
 
         //[Authorize]
         [HttpPost]
-        public IActionResult SaveRoute(Route route)
+        public IActionResult SaveRoute([FromBody] Route route)
         {
             if (route.Coordinates == null || route.Coordinates.Count() < 2)
                 return BadRequest("No route data selected.");
@@ -50,9 +50,10 @@ namespace MapAYakApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userId = _userManager.GetUserId(User);
-            if (route.UserId != userId)
-                return BadRequest("Cannot add route for another user.");
+            route.UserId = "d41552b6-571e-4a84-93b6-ee88261d4b0b";
+            //var userId = _userManager.GetUserId(User);
+            //if (route.UserId != userId)
+            //    return BadRequest("Cannot add route for another user.");
 
             _routeRepository.SaveRoute(route);
 
@@ -61,14 +62,15 @@ namespace MapAYakApi.Controllers
 
         //[Authorize]
         [HttpPost]
-        public IActionResult SaveLocation(Location location)
+        public IActionResult SaveLocation([FromBody] Location location)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userId = _userManager.GetUserId(User);
-            if (location.UserId != userId)
-                return BadRequest("Cannot add location for another user.");
+            location.UserId = "d41552b6-571e-4a84-93b6-ee88261d4b0b";
+            //var userId = _userManager.GetUserId(User);
+            //if (location.UserId != userId)
+            //    return BadRequest("Cannot add location for another user.");
 
             _locationRepository.SaveLocation(location);
 

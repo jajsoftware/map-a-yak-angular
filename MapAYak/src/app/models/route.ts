@@ -1,8 +1,9 @@
 import { Coordinate } from "./coordinate";
 
 export class Route {
-    public UserId: string;
-    public Name: string;
-    public Description: string;
-    public Coordinates: Coordinate[];
+    public userId: string;
+    public userName: string;
+    public name: string;
+    public description: string;
+    public coordinates: Coordinate[];
 }

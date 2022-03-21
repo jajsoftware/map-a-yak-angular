@@ -57,35 +57,35 @@ export class DataService {
     saveRoute(name: string, description: string): Observable<unknown> {
         var route = new Route();
 
-        route.UserId = 'TO-DO';
-        route.Name = name;
-        route.Description = description;
+        route.userId = 'TO-DO';
+        route.name = name;
+        route.description = description;
 
-        route.Coordinates = [];
+        route.coordinates = [];
         for (var marker of this.mapService.coordinates) {
             var coordinate = new Coordinate();
 
             var latlng = marker.getLatLng();
-            coordinate.Latitude = latlng.lat;
-            coordinate.Longitude = latlng.lng;
+            coordinate.latitude = latlng.lat;
+            coordinate.longitude = latlng.lng;
 
-            route.Coordinates.push(coordinate);
+            route.coordinates.push(coordinate);
         }
 
         return this.http.post('http://localhost:5253/data/saveRoute', route);
     }
 
-    saveLocation(locationType: LocationType, name: string, description: string): Observable<unknown> {
+    saveLocation(type: LocationType, name: string, description: string): Observable<unknown> {
         var location = new Location();
 
-        location.UserId = 'TO-DO';
-        location.LocationType = locationType;
-        location.Name = name;
-        location.Description = description;
+        location.userId = 'TO-DO';
+        location.type = type;
+        location.name = name;
+        location.description = description;
 
         var latlng = this.mapService.location.getLatLng();
-        location.Latitude = latlng.lat;
-        location.Longitude = latlng.lng;
+        location.latitude = latlng.lat;
+        location.longitude = latlng.lng;
 
         return this.http.post('http://localhost:5253/data/saveLocation', location);
     }

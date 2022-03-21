@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MapAYakApi.Models
 {
@@ -25,6 +26,7 @@ namespace MapAYakApi.Models
 
         #region Relations
 
+        [JsonIgnore]
         public Route Route { get; set; }
 
         #endregion

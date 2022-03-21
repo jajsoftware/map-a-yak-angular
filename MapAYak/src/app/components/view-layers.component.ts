@@ -69,15 +69,15 @@ export class ViewLayersComponent implements AfterViewInit {
 
     onRouteClick(e: LeafletMouseEvent): void {
         this.hidePreview();
-        this.showRoute(e.layer as Marker);
+        this.showRoute(e.target as Marker);
     }
 
     onLocationClick(e: LeafletMouseEvent): void {
-        this.showLocation(e.layer as Marker);
+        this.showLocation(e.target as Marker);
     }
 
     onRouteHover(e: LeafletMouseEvent): void {
-        this.showPreview(e.layer as Marker);
+        this.showPreview(e.target as Marker);
     }
 
     onRouteLeaveHover(e: LeafletMouseEvent): void {
@@ -94,8 +94,10 @@ export class ViewLayersComponent implements AfterViewInit {
     //==============================================================================
     drawRoutes(routes: Route[]): void {
         for (var route of routes) {
-            var marker = new Marker([route.Coordinates[0].Latitude, route.Coordinates[0].Longitude]);
+            var marker = new Marker([route.coordinates[0].latitude, route.coordinates[0].longitude]);
             marker.addTo(this.mapService.map);
+
+            marker.setIcon(this.mapService.blueMarker);
 
             marker.on('click', (e: LeafletMouseEvent) => this.onRouteClick(e));
             marker.on('mouseover', (e: LeafletMouseEvent) => this.onRouteHover(e));
@@ -107,10 +109,10 @@ export class ViewLayersComponent implements AfterViewInit {
 
     drawLocations(locations: Location[]): void {
         for (var location of locations) {
-            var marker = new Marker([location.Latitude, location.Longitude]);
+            var marker = new Marker([location.latitude, location.longitude]);
             marker.addTo(this.mapService.map);
 
-            var icon = location.LocationType === LocationType.Portage ? this.mapService.yellowMarker : this.mapService.orangeMarker;
+            var icon = location.type === LocationType.Portage ? this.mapService.yellowMarker : this.mapService.orangeMarker;
             marker.setIcon(icon);
 
             marker.on('click', (e: LeafletMouseEvent) => this.onLocationClick(e));
@@ -131,7 +133,7 @@ export class ViewLayersComponent implements AfterViewInit {
         this.selectedRouteMarker = marker;
 
         var route = this.routes.get(marker);
-        var coordinates = route.Coordinates.map(c => new LatLng(c.Latitude, c.Longitude));
+        var coordinates = route.coordinates.map(c => new LatLng(c.latitude, c.longitude));
 
         var lineOptions = {
             color: 'blue',
@@ -149,9 +151,9 @@ export class ViewLayersComponent implements AfterViewInit {
 
         this.selectedLayer = {
             type: 'Route',
-            name: route.Name,
-            description: route.Description,
-            user: route.UserId,
+            name: route.name,
+            description: route.description,
+            user: route.userName,
             distance: this.mapService.getDistance(coordinates),
             iconPath: 'assets/blue-marker.png'
         };
@@ -185,11 +187,11 @@ export class ViewLayersComponent implements AfterViewInit {
         var location = this.locations.get(marker);
 
         this.selectedLayer = {
-            type: location.LocationType === LocationType.Portage ? 'Portage' : 'Campsite',
-            name: location.Name,
-            description: location.Description,
-            user: location.UserId,
-            iconPath: location.LocationType === LocationType.Portage ? 'assets/yellow-marker.png' : 'assets/orange-marker.png'
+            type: location.type === LocationType.Portage ? 'Portage' : 'Campsite',
+            name: location.name,
+            description: location.description,
+            user: location.userName,
+            iconPath: location.type === LocationType.Portage ? 'assets/yellow-marker.png' : 'assets/orange-marker.png'
         };
     }
 
@@ -200,7 +202,7 @@ export class ViewLayersComponent implements AfterViewInit {
 
     showPreview(marker: Marker): void {
         var route = this.routes.get(marker);
-        var coordinates = route.Coordinates.map(c => new LatLng(c.Latitude, c.Longitude));
+        var coordinates = route.coordinates.map(c => new LatLng(c.latitude, c.longitude));
 
         var lineOptions = {
             color: 'red',
