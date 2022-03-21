@@ -1,4 +1,6 @@
+using MapAYakApi.Interfaces;
 using MapAYakApi.Models;
+using MapAYakApi.Models.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,14 +21,28 @@ builder.Services
     })
     .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddCors(options => options.AddDefaultPolicy(
+    config => config.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
+
+builder.Services.AddScoped<IRouteRepository, RouteRepository>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+
 //==============================================================================
 // Middleware
 //==============================================================================
 
 var app = builder.Build();
 
-app.UseAuthentication();
+if (!app.Environment.IsDevelopment())
+    app.UseHsts();
 
-app.MapGet("/", () => "Hello World!");
+app.UseHttpsRedirection();
+
+app.UseCors();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllerRoute(name: "default", pattern: "{controller}/{action}");
 
 app.Run();
