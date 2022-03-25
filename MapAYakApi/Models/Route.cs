@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace MapAYakApi.Models
 {
@@ -13,38 +11,23 @@ namespace MapAYakApi.Models
 
         public int Id { get; set; }
 
-        [JsonIgnore]
-        [Required]
+        [Required(ErrorMessage = "User ID is required.")]
         public string UserId { get; set; }
 
-        [Required]
-        [MaxLength(100)]
+        [Required(ErrorMessage = "Name is required.")]
+        [MaxLength(100, ErrorMessage = "Name can not be more than 100 characters.")]
         public string Name { get; set; }
 
-        [MaxLength(10000)]
+        [MaxLength(10000, ErrorMessage = "Description can not be more than 10,000 characters.")]
         public string Description { get; set; }
 
         #endregion
 
         #region Relations
 
-        [JsonIgnore]
         public IdentityUser User { get; set; }
 
         public IEnumerable<Coordinate> Coordinates { get; set; }
-
-        #endregion
-
-        #region Non-Database Fields
-
-        [NotMapped]
-        public string UserName
-        {
-            get
-            {
-                return User.UserName;
-            }
-        }
 
         #endregion
     }

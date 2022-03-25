@@ -10,9 +10,22 @@ export enum LocationType {
 }
 
 export enum ModalType {
-    Save = 0,
-    Discard = 1,
-    UserLayers = 2
+    Account = 0,
+    Save = 1,
+    Discard = 2,
+    UserLayers = 3
+}
+
+export enum AccountModalType {
+    SignIn = 0,
+    Register = 1,
+    EmailConfirmationSent = 2,
+    ConfirmEmail = 3,
+    ResendEmailConfirmation = 4,
+    ForgotPassword = 5,
+    PasswordResetSent = 6,
+    ResetPassword = 7,
+    ResetPasswordConfirmation = 8
 }
 
 

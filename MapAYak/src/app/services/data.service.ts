@@ -5,6 +5,7 @@ import { Coordinate } from '../models/coordinate';
 import { LayerType, LocationType } from '../models/enums';
 import { Location } from '../models/location';
 import { Route } from '../models/route';
+import { AccountService } from './account.service';
 import { MapService } from './map.service';
 
 @Injectable({
@@ -17,24 +18,26 @@ export class DataService {
     //==============================================================================
     private readonly http: HttpClient;
     private readonly mapService: MapService;
+    private readonly accountService: AccountService;
 
     //==============================================================================
     // Constructor
     //==============================================================================
-    constructor(http: HttpClient, mapService: MapService) {
+    constructor(http: HttpClient, mapService: MapService, accountService: AccountService) {
         this.http = http;
         this.mapService = mapService;
+        this.accountService = accountService;
     }
 
     //==============================================================================
     // Public Methods
     //==============================================================================
     getRoutes(): Observable<Route[]> {
-        return this.http.get<Route[]>('http://localhost:5253/data/routes');
+        return this.http.get<Route[]>('/api/Data/Routes');
     }
 
     getLocations(): Observable<Location[]> {
-        return this.http.get<Location[]>('http://localhost:5253/data/locations');
+        return this.http.get<Location[]>('/api/Data/Locations');
     }
 
     save(layerType: LayerType, name: string, description: string): Observable<unknown> {
@@ -57,7 +60,7 @@ export class DataService {
     saveRoute(name: string, description: string): Observable<unknown> {
         var route = new Route();
 
-        route.userId = 'TO-DO';
+        route.userName = this.accountService.userName;
         route.name = name;
         route.description = description;
 
@@ -72,13 +75,13 @@ export class DataService {
             route.coordinates.push(coordinate);
         }
 
-        return this.http.post('http://localhost:5253/data/saveRoute', route);
+        return this.http.post('/api/Data/SaveRoute', route);
     }
 
     saveLocation(type: LocationType, name: string, description: string): Observable<unknown> {
         var location = new Location();
 
-        location.userId = 'TO-DO';
+        location.userName = this.accountService.userName;
         location.type = type;
         location.name = name;
         location.description = description;
@@ -87,6 +90,6 @@ export class DataService {
         location.latitude = latlng.lat;
         location.longitude = latlng.lng;
 
-        return this.http.post('http://localhost:5253/data/saveLocation', location);
+        return this.http.post('/api/Data/SaveLocation', location);
     }
 }

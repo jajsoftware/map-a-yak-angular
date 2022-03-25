@@ -15,16 +15,16 @@ html, body {
     z-index: 1000;
 }
 
-/*.background-image {
+.background-image {
     height: 100%;
-    width: 100%;
-    position: fixed;
-    background-image: url('../images/kayak.jpg');
+    min-height: 500px;
+    background-image: url('assets/kayak.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     filter: opacity(90%);
-}*/
+    box-shadow: 0 0 8px 3px inset white;
+}
 
 .leaflet-container.crosshair-cursor {
     cursor: crosshair;
@@ -53,4 +53,16 @@ html, body {
     top: 8%;
     left: 1%;
     z-index: 1000;
+}
+
+#accountModal .modal-xl {
+    max-width: 925px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.keep-new-lines {
+    white-space: pre-wrap;
 }

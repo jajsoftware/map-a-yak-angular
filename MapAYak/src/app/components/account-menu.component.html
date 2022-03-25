@@ -1,0 +1,9 @@
+<div *ngIf="accountService.userName" class="btn-group">
+    <button data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-info dropdown-toggle">
+        {{ accountService.userName }}
+    </button>
+    <div class="dropdown-menu dropdown-menu-end" style="min-width: 0px;">
+        <a (click)="onSignOut()" class="dropdown-item">Sign Out</a>
+    </div>
+</div>
+<a *ngIf="!accountService.userName" (click)="onSignIn()" class="btn btn-primary">Sign In</a>

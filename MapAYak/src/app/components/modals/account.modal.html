@@ -1,0 +1,24 @@
+<div id="accountModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col">
+                    <div class="background-image rounded-start"></div>
+                </div>
+                <div class="col">
+                    <div class="p-5 ps-4 h-100 row align-items-center text-center">
+                        <sign-in-component [hidden]="type !== AccountModalType.SignIn"></sign-in-component>
+                        <register-component [hidden]="type !== AccountModalType.Register"></register-component>
+                        <email-confirmation-sent-component [hidden]="type !== AccountModalType.EmailConfirmationSent"></email-confirmation-sent-component>
+                        <confirm-email-component [hidden]="type !== AccountModalType.ConfirmEmail"></confirm-email-component>
+                        <resend-email-confirmation-component [hidden]="type !== AccountModalType.ResendEmailConfirmation"></resend-email-confirmation-component>
+                        <forgot-password-component [hidden]="type !== AccountModalType.ForgotPassword"></forgot-password-component>
+                        <password-reset-sent-component [hidden]="type !== AccountModalType.PasswordResetSent"></password-reset-sent-component>
+                        <reset-password-component [hidden]="type !== AccountModalType.ResetPassword"></reset-password-component>
+                        <reset-password-confirmation-component [hidden]="type !== AccountModalType.ResetPasswordConfirmation"></reset-password-confirmation-component>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

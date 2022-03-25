@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { LayerType, ModalType } from '../models/enums';
+import { AccountModalType, LayerType, ModalType } from '../models/enums';
+import { AccountService } from '../services/account.service';
 import { MapService } from '../services/map.service';
 import { ModalService } from '../services/modal.service';
 
@@ -18,13 +19,15 @@ export class CreateMenuComponent {
     // Data Members
     //==============================================================================
     private mapService: MapService;
+    private accountService: AccountService;
     private modalService: ModalService;
 
     //==============================================================================
     // Constructor
     //==============================================================================
-    constructor(mapService: MapService, modalService: ModalService) {
+    constructor(mapService: MapService, accountService: AccountService, modalService: ModalService) {
         this.mapService = mapService;
+        this.accountService = accountService;
         this.modalService = modalService;
 
         this.mapService.layerCreated.subscribe(layerType => this.layerCreated = true);
@@ -34,8 +37,11 @@ export class CreateMenuComponent {
     // Event Handlers
     //==============================================================================
     onSave(): void {
-        //if(notSignedIn)
-        //signIn;
+        if (!this.accountService.userName) {
+            this.accountService.updateAccountModalType(AccountModalType.SignIn);
+            this.modalService.open(ModalType.Account);
+            return;
+        }
 
         this.modalService.open(ModalType.Save);
     }

@@ -1,6 +1,7 @@
 using MapAYakApi.Interfaces;
 using MapAYakApi.Models;
 using MapAYakApi.Models.Repositories;
+using MapAYakApi.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 //==============================================================================
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Holds connection string and email credentials.
+builder.Configuration.AddJsonFile("secrets.json", true);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -21,11 +25,9 @@ builder.Services
     })
     .AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddCors(options => options.AddDefaultPolicy(
-    config => config.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
-
 builder.Services.AddScoped<IRouteRepository, RouteRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 //==============================================================================
 // Middleware
@@ -38,11 +40,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(name: "default", pattern: "{controller}/{action}");
+app.MapControllerRoute(name: "default", pattern: "api/{controller}/{action}");
 
 app.Run();

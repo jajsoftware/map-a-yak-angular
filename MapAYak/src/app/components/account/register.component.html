@@ -1,0 +1,43 @@
+<h3 class="fw-bold mb-5">Create New Account</h3>
+
+<p *ngIf="error" class="text-danger keep-new-lines">{{ error }}</p>
+
+<div class="form-outline mb-4">
+    <input [formControl]="email" placeholder="example@example.com" class="form-control form-control-lg" />
+    <label class="form-label">Email</label>
+    <div *ngIf="email.touched" class="text-danger">
+        <div *ngIf="email.errors?.['required']">Email is required.</div>
+        <div *ngIf="email.errors?.['email']">Invalid email address format.</div>
+    </div>
+</div>
+
+<div class="form-outline mb-4">
+    <input [formControl]="userName" class="form-control form-control-lg" />
+    <label class="form-label">User Name</label>
+    <div *ngIf="userName.touched" class="text-danger">
+        <div *ngIf="userName.errors?.['required']">User name is required.</div>
+    </div>
+</div>
+
+<div class="form-outline mb-4">
+    <input [formControl]="password" type="password" placeholder="password" class="form-control form-control-lg" />
+    <label class="form-label">Password</label>
+    <div *ngIf="password.touched" class="text-danger">
+        <div *ngIf="password.errors?.['required']">Password is required.</div>
+    </div>
+</div>
+
+<div class="form-outline mb-4">
+    <input [formControl]="confirmPassword" type="password" placeholder="password" class="form-control form-control-lg" />
+    <label class="form-label">Confirm Password</label>
+    <div *ngIf="confirmPassword.touched" class="text-danger">
+        <div *ngIf="confirmPassword.errors?.['required']">Confirmation password is required.</div>
+    </div>
+</div>
+
+<button (click)="onRegister()" class="btn btn-primary btn-lg btn-block">Register</button>
+
+<hr class="my-4">
+
+<div>Already have an account? <a (click)="onSignIn()" class="text-primary">Sign In</a></div>
+<a (click)="onCancel()" class="small text-danger">Cancel</a>

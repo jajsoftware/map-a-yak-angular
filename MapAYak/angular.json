@@ -69,7 +69,8 @@
               "browserTarget": "mapayak:build:production"
             },
             "development": {
-              "browserTarget": "mapayak:build:development"
+              "browserTarget": "mapayak:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

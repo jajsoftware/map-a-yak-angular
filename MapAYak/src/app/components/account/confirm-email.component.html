@@ -1,0 +1,8 @@
+<p *ngIf="success">Thank you for confirming your email.</p>
+
+<h6 *ngIf="!success" class="mb-4">Confirming Email</h6>
+<p *ngIf="error" class="text-danger keep-new-lines">{{ error }}</p>
+
+<hr class="my-4">
+
+<a (click)="onReturnHome()" class="small text-primary">Return Home</a>

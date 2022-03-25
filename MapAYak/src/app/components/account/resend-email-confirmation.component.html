@@ -1,0 +1,17 @@
+<h5 class="d-flex ms-1 mb-4">Enter Your Email</h5>
+
+<p *ngIf="error" class="text-danger keep-new-lines">{{ error }}</p>
+
+<div class="form-outline mb-4">
+    <input [formControl]="email" placeholder="example@example.com" class="form-control form-control-lg" />
+    <div *ngIf="email.touched" class="text-danger">
+        <div *ngIf="email.errors?.['required']">Email is required.</div>
+        <div *ngIf="email.errors?.['email']">Invalid email address format.</div>
+    </div>
+</div>
+
+<button (click)="onResend()" class="btn btn-primary btn-lg btn-block">Resend</button>
+
+<hr class="my-4">
+
+<a (click)="onCancel()" class="small text-danger">Cancel</a>

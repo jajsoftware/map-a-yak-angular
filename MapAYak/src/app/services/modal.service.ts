@@ -29,4 +29,8 @@ export class ModalService {
     open(type: ModalType): void {
         this.modals.get(type).show();
     }
+
+    close(type: ModalType): void {
+        this.modals.get(type).hide();
+    }
 }

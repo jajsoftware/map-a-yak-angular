@@ -4,3 +4,6 @@ MapAYak/.angular/cache/
 MapAYak/node_modules/
 MapAYakApi/bin/
 MapAYakApi/obj/
+
+# Files
+MapAYakApi/secrets.json
