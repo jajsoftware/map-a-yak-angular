@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LatLng, Layer, LeafletMouseEvent, Marker, Polyline } from 'leaflet';
-import { LayerType } from '../models/enums';
+import { LayerType } from '../enums/enums';
 import { MapService } from '../services/map.service';
 
 @Component({

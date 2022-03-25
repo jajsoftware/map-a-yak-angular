@@ -1,8 +1,8 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { LatLng, LeafletMouseEvent, Marker, Polyline } from 'leaflet';
-import { LayerType, LocationType } from '../models/enums';
-import { Location } from '../models/location';
-import { Route } from '../models/route';
+import { LocationDto } from '../dtos/data/location.dto';
+import { RouteDto } from '../dtos/data/route.dto';
+import { LayerType, LocationType } from '../enums/enums';
 import { DataService } from '../services/data.service';
 import { MapService } from '../services/map.service';
 
@@ -22,8 +22,8 @@ export class ViewLayersComponent implements AfterViewInit {
     //==============================================================================
     private readonly mapService: MapService;
     private readonly dataService: DataService;
-    private routes: Map<Marker, Route>;
-    private locations: Map<Marker, Location>;
+    private routes: Map<Marker, RouteDto>;
+    private locations: Map<Marker, LocationDto>;
     private selectedRouteMarker: Marker;
     private selectedRouteEndMarker: Marker;
     private selectedRouteLine: Polyline;
@@ -36,8 +36,8 @@ export class ViewLayersComponent implements AfterViewInit {
     constructor(mapService: MapService, dataService: DataService) {
         this.mapService = mapService;
         this.dataService = dataService;
-        this.routes = new Map<Marker, Route>();
-        this.locations = new Map<Marker, Location>();
+        this.routes = new Map<Marker, RouteDto>();
+        this.locations = new Map<Marker, LocationDto>();
 
         this.mapService.layerCreated.subscribe(layerType => this.onLayerCreated(layerType));
     }
@@ -92,7 +92,7 @@ export class ViewLayersComponent implements AfterViewInit {
     //==============================================================================
     // Private Methods
     //==============================================================================
-    drawRoutes(routes: Route[]): void {
+    drawRoutes(routes: RouteDto[]): void {
         for (var route of routes) {
             var marker = new Marker([route.coordinates[0].latitude, route.coordinates[0].longitude]);
             marker.addTo(this.mapService.map);
@@ -107,7 +107,7 @@ export class ViewLayersComponent implements AfterViewInit {
         }
     }
 
-    drawLocations(locations: Location[]): void {
+    drawLocations(locations: LocationDto[]): void {
         for (var location of locations) {
             var marker = new Marker([location.latitude, location.longitude]);
             marker.addTo(this.mapService.map);

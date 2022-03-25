@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Icon, LatLng, Map, Marker } from 'leaflet';
 import { Subject } from 'rxjs';
-import { LayerType } from '../models/enums';
+import { LayerType } from '../enums/enums';
 
 @Injectable({
     providedIn: 'root'

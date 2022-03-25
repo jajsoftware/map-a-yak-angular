@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LayerType, LayerTypeDescription, ModalType } from '../../models/enums';
+import { LayerType, LayerTypeDescription, ModalType } from '../../enums/enums';
 import { DataService } from '../../services/data.service';
 import { MapService } from '../../services/map.service';
 import { ModalService } from '../../services/modal.service';

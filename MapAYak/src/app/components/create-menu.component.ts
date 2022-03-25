@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AccountModalType, LayerType, ModalType } from '../models/enums';
+import { AccountModalType, LayerType, ModalType } from '../enums/enums';
 import { AccountService } from '../services/account.service';
 import { MapService } from '../services/map.service';
 import { ModalService } from '../services/modal.service';

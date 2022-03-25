@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Coordinate } from '../models/coordinate';
-import { LayerType, LocationType } from '../models/enums';
-import { Location } from '../models/location';
-import { Route } from '../models/route';
+import { CoordinateDto } from '../dtos/data/coordinate.dto';
+import { LocationDto } from '../dtos/data/location.dto';
+import { RouteDto } from '../dtos/data/route.dto';
+import { LayerType, LocationType } from '../enums/enums';
 import { AccountService } from './account.service';
 import { MapService } from './map.service';
 
@@ -32,12 +32,12 @@ export class DataService {
     //==============================================================================
     // Public Methods
     //==============================================================================
-    getRoutes(): Observable<Route[]> {
-        return this.http.get<Route[]>('/api/Data/Routes');
+    getRoutes(): Observable<RouteDto[]> {
+        return this.http.get<RouteDto[]>('/api/Data/Routes');
     }
 
-    getLocations(): Observable<Location[]> {
-        return this.http.get<Location[]>('/api/Data/Locations');
+    getLocations(): Observable<LocationDto[]> {
+        return this.http.get<LocationDto[]>('/api/Data/Locations');
     }
 
     save(layerType: LayerType, name: string, description: string): Observable<unknown> {
@@ -58,7 +58,7 @@ export class DataService {
     // Private Methods
     //==============================================================================
     saveRoute(name: string, description: string): Observable<unknown> {
-        var route = new Route();
+        var route = new RouteDto();
 
         route.userName = this.accountService.userName;
         route.name = name;
@@ -66,7 +66,7 @@ export class DataService {
 
         route.coordinates = [];
         for (var marker of this.mapService.coordinates) {
-            var coordinate = new Coordinate();
+            var coordinate = new CoordinateDto();
 
             var latlng = marker.getLatLng();
             coordinate.latitude = latlng.lat;
@@ -79,7 +79,7 @@ export class DataService {
     }
 
     saveLocation(type: LocationType, name: string, description: string): Observable<unknown> {
-        var location = new Location();
+        var location = new LocationDto();
 
         location.userName = this.accountService.userName;
         location.type = type;

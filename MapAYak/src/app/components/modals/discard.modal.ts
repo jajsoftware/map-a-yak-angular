@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LayerType, LayerTypeDescription, ModalType } from '../../models/enums';
+import { LayerType, LayerTypeDescription, ModalType } from '../../enums/enums';
 import { MapService } from '../../services/map.service';
 import { ModalService } from '../../services/modal.service';
 

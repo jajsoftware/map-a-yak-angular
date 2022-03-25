@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Modal } from 'bootstrap';
-import { ModalType } from '../models/enums';
+import { ModalType } from '../enums/enums';
 
 @Injectable({
     providedIn: 'root'

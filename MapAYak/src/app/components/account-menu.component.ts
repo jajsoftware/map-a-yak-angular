@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AccountModalType, ModalType } from '../models/enums';
+import { AccountModalType, ModalType } from '../enums/enums';
 import { AccountService } from '../services/account.service';
 import { ModalService } from '../services/modal.service';
 

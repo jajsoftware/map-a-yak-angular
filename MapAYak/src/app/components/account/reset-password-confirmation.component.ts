@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AccountModalType } from '../../models/enums';
+import { AccountModalType } from '../../enums/enums';
 import { AccountService } from '../../services/account.service';
 
 @Component({

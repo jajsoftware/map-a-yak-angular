@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { DomUtil, Icon, Map, TileLayer } from 'leaflet';
-import { LayerType } from '../models/enums';
+import { LayerType } from '../enums/enums';
 import { MapService } from '../services/map.service';
 
 @Component({

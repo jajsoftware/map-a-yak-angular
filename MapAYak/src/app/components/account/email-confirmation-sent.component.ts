@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalType } from '../../models/enums';
+import { ModalType } from '../../enums/enums';
 import { ModalService } from '../../services/modal.service';
 
 @Component({

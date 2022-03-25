@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
-import { ConfirmEmailDto } from '../models/dtos/confirm-email.dto';
-import { EmailDto } from '../models/dtos/email.dto';
-import { RegisterDto } from '../models/dtos/register.dto';
-import { ResetPasswordDto } from '../models/dtos/reset-password.dto';
-import { SignInDto } from '../models/dtos/sign-in.dto';
-import { AccountModalType } from '../models/enums';
+import { ConfirmEmailDto } from '../dtos/account/confirm-email.dto';
+import { EmailDto } from '../dtos/account/email.dto';
+import { RegisterDto } from '../dtos/account/register.dto';
+import { ResetPasswordDto } from '../dtos/account/reset-password.dto';
+import { SignInDto } from '../dtos/account/sign-in.dto';
+import { AccountModalType } from '../enums/enums';
 
 @Injectable({
     providedIn: 'root'
