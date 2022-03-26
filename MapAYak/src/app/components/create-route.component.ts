@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { LatLng, Layer, LeafletMouseEvent, Marker, Polyline } from 'leaflet';
+import { LatLngExpression, Layer, LeafletMouseEvent, Marker, Polyline } from 'leaflet';
+import { UserLayerDto } from '../dtos/data/user-layer.dto';
 import { LayerType } from '../enums/enums';
 import { MapService } from '../services/map.service';
 
@@ -28,6 +29,7 @@ export class CreateRouteComponent {
         this.mapService = mapService;
 
         this.mapService.layerCreated.subscribe(layerType => this.onLayerCreated(layerType));
+        this.mapService.userLayerEdited.subscribe(layer => this.onEditUserLayer(layer));
     }
 
     //==============================================================================
@@ -39,6 +41,21 @@ export class CreateRouteComponent {
 
         this.mapService.map.on('click', e => this.onMapClick(e as LeafletMouseEvent));
         this.distance = "0.00";
+    }
+
+    onEditUserLayer(layer: UserLayerDto): void {
+        if (layer.type !== LayerType.Route)
+            return;
+
+        this.mapService.createLayer(LayerType.Route);
+
+        var route = this.mapService.allRoutes.get(layer.name);
+        for (var coordinate of route.coordinates)
+            this.addCoordinate([coordinate.latitude, coordinate.longitude]);
+
+        this.updateRoute();
+
+        this.mapService.map.setView(this.mapService.coordinates[0].getLatLng(), 12);
     }
 
     onMapClick(e: LeafletMouseEvent): void {
@@ -59,7 +76,7 @@ export class CreateRouteComponent {
     //==============================================================================
     // Private Methods
     //==============================================================================
-    addCoordinate(latlng: LatLng): void {
+    addCoordinate(latlng: LatLngExpression): void {
         var coordinate = new Marker(latlng, { draggable: true });
         coordinate.addTo(this.mapService.map);
 

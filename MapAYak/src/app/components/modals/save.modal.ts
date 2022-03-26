@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { UserLayerDto } from '../../dtos/data/user-layer.dto';
 import { LayerType, LayerTypeDescription, ModalType } from '../../enums/enums';
 import { DataService } from '../../services/data.service';
 import { MapService } from '../../services/map.service';
@@ -26,6 +27,7 @@ export class SaveModal implements OnInit {
     private readonly dataService: DataService;
     private readonly modalService: ModalService;
     private layerType: LayerType;
+    private existingLayer: boolean;
 
     //==============================================================================
     // Constructor
@@ -39,6 +41,7 @@ export class SaveModal implements OnInit {
         this.description = new FormControl('', Validators.maxLength(10000));
 
         this.mapService.layerCreated.subscribe(layerType => this.onLayerCreated(layerType));
+        this.mapService.userLayerEdited.subscribe(layer => this.onEditUserLayer(layer));
     }
 
     //==============================================================================
@@ -56,15 +59,31 @@ export class SaveModal implements OnInit {
         this.type = LayerTypeDescription.get(layerType);
     }
 
+    onEditUserLayer(layer: UserLayerDto): void {
+        this.existingLayer = true;
+
+        this.name.reset(layer.name);
+        this.description.reset(layer.description);
+
+        this.name.disable();
+    }
+
     onSave(): void {
         this.name.markAsTouched();
         this.description.markAsTouched();
 
-        if (!this.name.valid || !this.description.valid)
+        if (this.name.invalid || this.description.invalid)
             return;
 
-        this.dataService.save(this.layerType, this.name.value, this.description.value).subscribe(
-            success => location.reload(),
-            error => this.error = error.error);
+        if (this.existingLayer) {
+            this.dataService.update(this.layerType, this.name.value, this.description.value).subscribe(
+                success => location.reload(),
+                error => this.error = error.error);
+        }
+        else {
+            this.dataService.save(this.layerType, this.name.value, this.description.value).subscribe(
+                success => location.reload(),
+                error => this.error = error.error);
+        }
     }
 }

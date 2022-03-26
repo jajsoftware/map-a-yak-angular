@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Icon, LatLng, Map, Marker } from 'leaflet';
+import { Icon, LatLng, Map as LeafletMap, Marker } from 'leaflet';
 import { Subject } from 'rxjs';
+import { LocationDto } from '../dtos/data/location.dto';
+import { RouteDto } from '../dtos/data/route.dto';
+import { UserLayerDto } from '../dtos/data/user-layer.dto';
 import { LayerType } from '../enums/enums';
 
 @Injectable({
@@ -12,11 +15,14 @@ export class MapService {
     // Events
     //==============================================================================
     public layerCreated: Subject<LayerType>;
+    public userLayerViewed: Subject<UserLayerDto>;
+    public userLayerEdited: Subject<UserLayerDto>;
+    public userLayerDeleted: Subject<UserLayerDto>;
 
     //==============================================================================
     // Properties
     //==============================================================================
-    public map: Map;
+    public map: LeafletMap;
     public blueMarker: Icon;
     public greenMarker: Icon;
     public redMarker: Icon;
@@ -24,14 +30,21 @@ export class MapService {
     public orangeMarker: Icon;
     public coordinates: Marker[];
     public location: Marker;
+    public allRoutes: Map<string, RouteDto>;
+    public allLocations: Map<string, LocationDto>;
 
     //==============================================================================
     // Constructor
     //==============================================================================
     constructor() {
         this.coordinates = [];
+        this.allRoutes = new Map<string, RouteDto>();
+        this.allLocations = new Map<string, LocationDto>();
 
         this.layerCreated = new Subject<LayerType>();
+        this.userLayerViewed = new Subject<UserLayerDto>();
+        this.userLayerEdited = new Subject<UserLayerDto>();
+        this.userLayerDeleted = new Subject<UserLayerDto>();
     }
 
     //==============================================================================
@@ -39,6 +52,18 @@ export class MapService {
     //==============================================================================
     createLayer(layerType: LayerType): void {
         this.layerCreated.next(layerType);
+    }
+
+    viewUserLayer(layer: UserLayerDto): void {
+        this.userLayerViewed.next(layer);
+    }
+
+    editUserLayer(layer: UserLayerDto): void {
+        this.userLayerEdited.next(layer);
+    }
+
+    deleteUserLayer(layer: UserLayerDto): void {
+        this.userLayerDeleted.next(layer);
     }
 
     getDistance(coordinates: LatLng[]): string {

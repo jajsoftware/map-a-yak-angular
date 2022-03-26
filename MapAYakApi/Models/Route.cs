@@ -15,10 +15,10 @@ namespace MapAYakApi.Models
         public string UserId { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
-        [MaxLength(100, ErrorMessage = "Name can not be more than 100 characters.")]
+        [MaxLength(100, ErrorMessage = "Name cannot be more than 100 characters.")]
         public string Name { get; set; }
 
-        [MaxLength(10000, ErrorMessage = "Description can not be more than 10,000 characters.")]
+        [MaxLength(10000, ErrorMessage = "Description cannot be more than 10,000 characters.")]
         public string Description { get; set; }
 
         #endregion

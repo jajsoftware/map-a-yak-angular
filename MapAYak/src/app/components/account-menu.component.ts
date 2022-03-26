@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AccountModalType, ModalType } from '../enums/enums';
 import { AccountService } from '../services/account.service';
+import { MapService } from '../services/map.service';
 import { ModalService } from '../services/modal.service';
 
 @Component({
@@ -13,18 +14,23 @@ export class AccountMenuComponent {
     // Properties
     //==============================================================================
     public accountService: AccountService;
+    public layerCreated: boolean;
 
     //==============================================================================
     // Data Members
     //==============================================================================
-    private modalService: ModalService;
+    private readonly mapService: MapService;
+    private readonly modalService: ModalService;
 
     //==============================================================================
     // Constructor
     //==============================================================================
-    constructor(accountService: AccountService, modalService: ModalService) {
+    constructor(mapService: MapService, accountService: AccountService, modalService: ModalService) {
+        this.mapService = mapService;
         this.accountService = accountService;
         this.modalService = modalService;
+
+        this.mapService.layerCreated.subscribe(layerType => this.layerCreated = true);
     }
 
     //==============================================================================
@@ -37,5 +43,9 @@ export class AccountMenuComponent {
 
     onSignOut(): void {
         this.accountService.signOut().subscribe();
+    }
+
+    onUserLayers(): void {
+        this.modalService.open(ModalType.UserLayers);
     }
 }

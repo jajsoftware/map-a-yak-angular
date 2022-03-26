@@ -2,6 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { LatLng, LeafletMouseEvent, Marker, Polyline } from 'leaflet';
 import { LocationDto } from '../dtos/data/location.dto';
 import { RouteDto } from '../dtos/data/route.dto';
+import { UserLayerDto } from '../dtos/data/user-layer.dto';
 import { LayerType, LocationType } from '../enums/enums';
 import { DataService } from '../services/data.service';
 import { MapService } from '../services/map.service';
@@ -22,8 +23,8 @@ export class ViewLayersComponent implements AfterViewInit {
     //==============================================================================
     private readonly mapService: MapService;
     private readonly dataService: DataService;
-    private routes: Map<Marker, RouteDto>;
-    private locations: Map<Marker, LocationDto>;
+    private readonly routes: Map<Marker, string>;
+    private readonly locations: Map<Marker, string>;
     private selectedRouteMarker: Marker;
     private selectedRouteEndMarker: Marker;
     private selectedRouteLine: Polyline;
@@ -36,10 +37,12 @@ export class ViewLayersComponent implements AfterViewInit {
     constructor(mapService: MapService, dataService: DataService) {
         this.mapService = mapService;
         this.dataService = dataService;
-        this.routes = new Map<Marker, RouteDto>();
-        this.locations = new Map<Marker, LocationDto>();
+
+        this.routes = new Map<Marker, string>();
+        this.locations = new Map<Marker, string>();
 
         this.mapService.layerCreated.subscribe(layerType => this.onLayerCreated(layerType));
+        this.mapService.userLayerViewed.subscribe(layer => this.onViewUserLayer(layer));
     }
 
     //==============================================================================
@@ -57,14 +60,26 @@ export class ViewLayersComponent implements AfterViewInit {
         this.hideRoute();
         this.hideLocation();
 
-        for (var route of this.routes)
-            route[0].remove();
+        for (var marker of this.routes.keys())
+            marker.remove();
 
-        for (var location of this.locations)
-            location[0].remove();
+        for (var marker of this.locations.keys())
+            marker.remove();
 
         this.routes.clear();
         this.locations.clear();
+    }
+
+    onViewUserLayer(layer: UserLayerDto): void {
+        var layers = layer.type === LayerType.Route ? this.routes : this.locations;
+        var marker = Array.from(layers.keys()).find(c => layers.get(c) === layer.name);
+
+        this.mapService.map.setView(marker.getLatLng(), 12);
+
+        if (layer.type === LayerType.Route)
+            this.showRoute(marker);
+        else
+            this.showLocation(marker);
     }
 
     onRouteClick(e: LeafletMouseEvent): void {
@@ -103,7 +118,8 @@ export class ViewLayersComponent implements AfterViewInit {
             marker.on('mouseover', (e: LeafletMouseEvent) => this.onRouteHover(e));
             marker.on('mouseout', (e: LeafletMouseEvent) => this.onRouteLeaveHover(e));
 
-            this.routes.set(marker, route);
+            this.routes.set(marker, route.name);
+            this.mapService.allRoutes.set(route.name, route);
         }
     }
 
@@ -117,7 +133,8 @@ export class ViewLayersComponent implements AfterViewInit {
 
             marker.on('click', (e: LeafletMouseEvent) => this.onLocationClick(e));
 
-            this.locations.set(marker, location);
+            this.locations.set(marker, location.name);
+            this.mapService.allLocations.set(location.name, location);
         }
     }
 
@@ -132,7 +149,7 @@ export class ViewLayersComponent implements AfterViewInit {
 
         this.selectedRouteMarker = marker;
 
-        var route = this.routes.get(marker);
+        var route = this.mapService.allRoutes.get(this.routes.get(marker));
         var coordinates = route.coordinates.map(c => new LatLng(c.latitude, c.longitude));
 
         var lineOptions = {
@@ -184,7 +201,7 @@ export class ViewLayersComponent implements AfterViewInit {
 
         this.selectedLocationMarker = marker;
 
-        var location = this.locations.get(marker);
+        var location = this.mapService.allLocations.get(this.locations.get(marker));
 
         this.selectedLayer = {
             type: location.type === LocationType.Portage ? 'Portage' : 'Campsite',
@@ -201,7 +218,7 @@ export class ViewLayersComponent implements AfterViewInit {
     }
 
     showPreview(marker: Marker): void {
-        var route = this.routes.get(marker);
+        var route = this.mapService.allRoutes.get(this.routes.get(marker));
         var coordinates = route.coordinates.map(c => new LatLng(c.latitude, c.longitude));
 
         var lineOptions = {

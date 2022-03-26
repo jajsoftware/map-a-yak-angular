@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { LatLng, LeafletMouseEvent, Marker } from 'leaflet';
+import { LatLngExpression, LeafletMouseEvent, Marker } from 'leaflet';
+import { UserLayerDto } from '../dtos/data/user-layer.dto';
 import { LayerType } from '../enums/enums';
 import { MapService } from '../services/map.service';
 
@@ -22,6 +23,7 @@ export class CreateLocationComponent {
         this.mapService = mapService;
 
         this.mapService.layerCreated.subscribe(layerType => this.onLayerCreated(layerType));
+        this.mapService.userLayerEdited.subscribe(layer => this.onEditUserLayer(layer));
     }
 
     //==============================================================================
@@ -35,6 +37,18 @@ export class CreateLocationComponent {
         this.layerType = layerType;
     }
 
+    onEditUserLayer(layer: UserLayerDto): void {
+        if (layer.type === LayerType.Route)
+            return;
+
+        this.mapService.createLayer(layer.type);
+
+        var location = this.mapService.allLocations.get(layer.name);
+        this.addLocation([location.latitude, location.longitude]);
+
+        this.mapService.map.setView(this.mapService.location.getLatLng(), 12);
+    }
+
     onMapClick(e: LeafletMouseEvent): void {
         this.addLocation(e.latlng);
     }
@@ -42,7 +56,7 @@ export class CreateLocationComponent {
     //==============================================================================
     // Private Methods
     //==============================================================================
-    addLocation(latlng: LatLng): void {
+    addLocation(latlng: LatLngExpression): void {
         if (this.mapService.location)
             this.mapService.location.remove();
 

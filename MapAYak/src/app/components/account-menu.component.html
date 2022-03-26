@@ -3,6 +3,8 @@
         {{ accountService.userName }}
     </button>
     <div class="dropdown-menu dropdown-menu-end" style="min-width: 0px;">
+        <a *ngIf="!layerCreated" (click)="onUserLayers()" class="dropdown-item">My Routes & Locations</a>
+        <a *ngIf="layerCreated" class="dropdown-item disabled">My Routes & Locations</a>
         <a (click)="onSignOut()" class="dropdown-item">Sign Out</a>
     </div>
 </div>

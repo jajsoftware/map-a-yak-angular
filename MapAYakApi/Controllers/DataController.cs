@@ -33,18 +33,28 @@ namespace MapAYakApi.Controllers
 
         #region Actions
 
+        [HttpGet]
         public IEnumerable<RouteDto> Routes()
         {
-            var routes = _routeRepository.GetRoutes();
-
-            return routes.Select(route => GetRouteDto(route));
+            return _routeRepository.GetRoutes().Select(c => GetRouteDto(c));
         }
 
+        [HttpGet]
         public IEnumerable<LocationDto> Locations()
         {
-            var locations = _locationRepository.GetLocations();
+            return _locationRepository.GetLocations().Select(c => GetLocationDto(c));
+        }
 
-            return locations.Select(location => GetLocationDto(location));
+        [Authorize]
+        [HttpGet]
+        public IEnumerable<UserLayerDto> UserLayers()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var routes = _routeRepository.GetUserRoutes(userId).Select(c => GetUserRouteDto(c));
+            var locations = _locationRepository.GetUserLocations(userId).Select(c => GetUserLocationDto(c));
+
+            return routes.Concat(locations);
         }
 
         [Authorize]
@@ -86,6 +96,87 @@ namespace MapAYakApi.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpPost]
+        public IActionResult UpdateRoute([FromBody] RouteDto dto)
+        {
+            if (dto.Coordinates == null || dto.Coordinates.Count() < 2)
+                return BadRequest("No route data selected.");
+
+            var userName = _userManager.GetUserName(User);
+            if (dto.UserName == null || !dto.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase))
+                return BadRequest("Cannot update another user's route.");
+
+            var newRoute = GetRoute(dto);
+
+            if (!TryValidateModel(newRoute))
+                return BadRequest(ModelState.GetErrorMessage());
+
+            var oldRoute = _routeRepository.GetRoute(newRoute.Name);
+            if (oldRoute == null)
+                return BadRequest("Route not found.");
+
+            _routeRepository.UpdateRoute(oldRoute, newRoute);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult UpdateLocation([FromBody] LocationDto dto)
+        {
+            var userName = _userManager.GetUserName(User);
+            if (dto.UserName == null || !dto.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase))
+                return BadRequest("Cannot update another user's location.");
+
+            var newLocation = GetLocation(dto);
+
+            if (!TryValidateModel(newLocation))
+                return BadRequest(ModelState.GetErrorMessage());
+
+            var oldLocation = _locationRepository.GetLocation(newLocation.Name);
+            if (oldLocation == null)
+                return BadRequest("Location not found.");
+
+            _locationRepository.UpdateLocation(oldLocation, newLocation);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult DeleteRoute(string name)
+        {
+            var route = _routeRepository.GetRoute(name);
+            if (route == null)
+                return BadRequest("Route not found.");
+
+            var userId = _userManager.GetUserId(User);
+            if (route.UserId != userId)
+                return BadRequest("Cannot delete another user's route.");
+
+            _routeRepository.DeleteRoute(route);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult DeleteLocation(string name)
+        {
+            var location = _locationRepository.GetLocation(name);
+            if (location == null)
+                return BadRequest("Location not found.");
+
+            var userId = _userManager.GetUserId(User);
+            if (location.UserId != userId)
+                return BadRequest("Cannot delete another user's location.");
+
+            _locationRepository.DeleteLocation(location);
+
+            return Ok();
+        }
+
         #endregion
 
         #region Private Methods
@@ -106,6 +197,39 @@ namespace MapAYakApi.Controllers
             };
         }
 
+        private LocationDto GetLocationDto(Location location)
+        {
+            return new LocationDto()
+            {
+                UserName = location.User.UserName,
+                Type = location.Type,
+                Name = location.Name,
+                Description = location.Description,
+                Latitude = location.Latitude,
+                Longitude = location.Longitude
+            };
+        }
+
+        private UserLayerDto GetUserRouteDto(Route route)
+        {
+            return new UserLayerDto()
+            {
+                Type = LayerType.Route,
+                Name = route.Name,
+                Description = route.Description
+            };
+        }
+
+        private UserLayerDto GetUserLocationDto(Location location)
+        {
+            return new UserLayerDto()
+            {
+                Type = location.Type == LocationType.Portage ? LayerType.Portage : LayerType.Campsite,
+                Name = location.Name,
+                Description = location.Description
+            };
+        }
+
         private Route GetRoute(RouteDto dto)
         {
             var coordinates = dto.Coordinates.Select(c => new Coordinate()
@@ -120,19 +244,6 @@ namespace MapAYakApi.Controllers
                 Name = dto.Name,
                 Description = dto.Description,
                 Coordinates = coordinates.ToList()
-            };
-        }
-
-        private LocationDto GetLocationDto(Location location)
-        {
-            return new LocationDto()
-            {
-                UserName = location.User.UserName,
-                Type = location.Type,
-                Name = location.Name,
-                Description = location.Description,
-                Latitude = location.Latitude,
-                Longitude = location.Longitude
             };
         }
 

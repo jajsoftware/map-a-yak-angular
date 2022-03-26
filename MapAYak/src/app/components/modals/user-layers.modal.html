@@ -1,0 +1,33 @@
+<div id="userLayersModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">My Routes & Locations</h4>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <p *ngIf="!layers">You have not created any routes, portages or campsites yet.</p>
+
+                <div *ngFor="let layer of layers; last as isLast">
+                    <div class="row">
+                        <h5>
+                            <a (click)="onDelete(layer)" class="btn btn-danger btn-sm float-end ms-1">Delete</a>
+                            <a (click)="onEdit(layer)" class="btn btn-warning btn-sm float-end ms-1">Edit</a>
+                            <a (click)="onView(layer)" class="btn btn-info btn-sm float-end">View</a>
+                            <img src="{{ layer.markerPath }}" class="text-marker-icon" alt="Marker">
+                            <span class="align-middle ms-1">{{ layer.name }}</span>
+                        </h5>
+                        <p *ngIf="layer.description">{{ layer.description }}</p>
+                        <p *ngIf="!layer.description" class="fst-italic">No description.</p>
+                    </div>
+                    <hr *ngIf="!isLast" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,8 +19,10 @@ import { CreateMenuComponent } from '../components/create-menu.component';
 import { CreateRouteComponent } from '../components/create-route.component';
 import { MapComponent } from '../components/map.component';
 import { AccountModal } from '../components/modals/account.modal';
+import { DeleteConfirmationModal } from '../components/modals/delete-confirmation.modal';
 import { DiscardModal } from '../components/modals/discard.modal';
 import { SaveModal } from '../components/modals/save.modal';
+import { UserLayersModal } from '../components/modals/user-layers.modal';
 import { ViewLayersComponent } from '../components/view-layers.component';
 
 
@@ -36,6 +38,8 @@ import { ViewLayersComponent } from '../components/view-layers.component';
         AccountModal,
         SaveModal,
         DiscardModal,
+        UserLayersModal,
+        DeleteConfirmationModal,
         SignInComponent,
         RegisterComponent,
         EmailConfirmationSentComponent,

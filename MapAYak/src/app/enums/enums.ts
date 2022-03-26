@@ -13,7 +13,8 @@ export enum ModalType {
     Account = 0,
     Save = 1,
     Discard = 2,
-    UserLayers = 3
+    UserLayers = 3,
+    DeleteConfirmation = 4
 }
 
 export enum AccountModalType {
