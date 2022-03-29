@@ -2,8 +2,12 @@
 .vs/
 MapAYak/.angular/cache/
 MapAYak/node_modules/
+MapAYak/node_modules/
+MapAYak/dist/
 MapAYakApi/bin/
 MapAYakApi/obj/
+MapAYakApi/Properties/PublishProfiles/
 
 # Files
 MapAYakApi/secrets.json
+MapAYakApi/.config/dotnet-tools.json

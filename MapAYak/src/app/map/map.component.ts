@@ -51,7 +51,7 @@ export class MapComponent implements AfterViewInit {
         var tileLayer = new TileLayer(mapUrl, mapOptions);
         tileLayer.addTo(this.mapService.map);
 
-        this.mapService.map.setView([43.5, -84.5], 7); // Defaults to Michigan.
+        this.mapService.map.setView([44.25, -84.5], 7); // Defaults to Michigan.
     }
 
     initializeMarkers(): void {

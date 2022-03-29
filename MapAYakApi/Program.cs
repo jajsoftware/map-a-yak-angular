@@ -43,6 +43,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(name: "default", pattern: "api/{controller}/{action}");
+if (app.Environment.IsDevelopment())
+    app.MapControllerRoute(name: "default", pattern: "api/{controller}/{action}");
+else
+    app.MapControllerRoute(name: "default", pattern: "{controller}/{action}");
 
 app.Run();
